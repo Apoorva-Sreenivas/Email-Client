@@ -15,19 +15,34 @@ public class ReadFrame extends JFrame implements ActionListener
 	JLabel emailNo,subject,from;
 	JTextArea text;
 	JButton next,prev,compose;
-	JPanel p,p1,p2;
+	JPanel p0,p,p1,p2;
 	JScrollPane scroll;
+	JComboBox<String> dropdown;
 	int curMsgIndex;
 	private Message[] messages;
-	
+	String selectedOption = "INBOX";
 	public ReadFrame()
 	{
+		
+        
 		super("Read");
 		setLayout(new BorderLayout());
-		GridLayout l2 = new GridLayout(4,2);
+		GridLayout l2 = new GridLayout(5,1);
 		p = new JPanel(l2);
 		l2.setVgap(3);
 		p.setBorder(new EmptyBorder(10, 20, 10, 20));
+		String[] options = {"INBOX", "SPAM", "SENT"};
+        dropdown = new JComboBox<>(options);
+        dropdown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Update the label text when a new option is selected
+                selectedOption = (String) dropdown.getSelectedItem();
+                //selectedOption is the variable to be passed in RecieveMail.recievemail()
+            }
+        });
+        p.add(dropdown);
+        p.add(new JLabel(""));
 		p.add(new JLabel("Email Number"));
 		emailNo= new JLabel();
 		p.add(emailNo);
@@ -80,7 +95,6 @@ public class ReadFrame extends JFrame implements ActionListener
 //	    vbar.addAdjustmentListener(new MyAdjustmentListener());
 //	    add(hbar, BorderLayout.SOUTH);
 //	    add(vbar, BorderLayout.EAST);
-		
 		add(p,BorderLayout.NORTH);
 		add(p2,BorderLayout.WEST);
 		add(p1,BorderLayout.SOUTH);
