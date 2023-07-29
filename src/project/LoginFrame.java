@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 public class LoginFrame extends JFrame implements ActionListener
 {
 	JButton login= new JButton("LOGIN");
+	JButton exit = new JButton("EXIT");
 	JTextField username;
 	JPasswordField password;
 	String user;
@@ -23,7 +24,7 @@ public class LoginFrame extends JFrame implements ActionListener
 		setLayout(new BorderLayout());
 
 		
-		ImageIcon i1 = new ImageIcon("C:/Users/Apoorva/eclipse-workspace/email client software/src/assets/accountcircle.png");
+		ImageIcon i1 = new ImageIcon("C:/Users/Apoorva/eclipse-workspace/Email-Client/src/assets/accountcircle.png");
 //		ClassLoader.getSystemResource("/email client software/src/project/login_FILL0_wght400_GRAD0_opsz48.png");
 //		ImageIcon i1 = new ImageIcon("/email client software/src/project/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_1978396.jpg");
 //		Image i2 = i1.getImage().getScaledInstance(20, 20, NORMAL);
@@ -53,8 +54,10 @@ public class LoginFrame extends JFrame implements ActionListener
 		password = new JPasswordField(45);
 		password.setText("tyswncocuxprkgaa");
 		p.add(password);
+		exit.addActionListener(this);
 		login.addActionListener(this);
 		p1.add(login);
+		p1.add(exit);
 		
 		add(p,BorderLayout.CENTER); //username and password
 		add(p0,BorderLayout.NORTH); //image
@@ -73,7 +76,8 @@ public class LoginFrame extends JFrame implements ActionListener
 	
 	public void actionPerformed(ActionEvent ae)
 	{
-		
+		JButton pb = (JButton)ae.getSource();
+		if(pb==login) {
 		user=username.getText()	;
 		pass= password.getPassword();
 		//UserCredentials user = new UserCredentials();
@@ -83,6 +87,11 @@ public class LoginFrame extends JFrame implements ActionListener
 		u1.setPwd(pass);
 
 		this.handler.handleLogin(u1);
+		}
+		else if(pb==exit)
+		{
+			System.exit(0);
+		}
 	}
 //	public static void main(String[] args)
 //	{

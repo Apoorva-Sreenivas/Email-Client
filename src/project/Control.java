@@ -21,9 +21,10 @@ public class Control implements ICredentialsHandler {
 		RecieveMail robj = new RecieveMail(); 
 		SendMail sobj = new SendMail();
 		try {
-			String host = "pop.gmail.com";//change accordingly  
-			  String mailStoreType = "pop3";
-		  robj.receiveEmail(host, mailStoreType, u.getUserName(), u.getPwd());
+			
+		  robj.recieveCred(u);
+		  robj.receiveEmail();
+		  
 		  sobj.recieveCred(u);
 		  new ReadFrame().setMessages(robj.getMessage());
 		  log.setVisible(false);

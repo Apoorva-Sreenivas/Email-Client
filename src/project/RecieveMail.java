@@ -9,10 +9,12 @@ public class RecieveMail {
 	Message[] messages;
 	private Folder emailFolder;
 	private Store store;
-	 public  void receiveEmail(String pop3Host, String storeType,  
-			  String user, char[] cs) throws MessagingException {  
+	 String mailtype="INBOX";
+	 static String user;
+		static char[] pwd;
+	 public  void receiveEmail() throws MessagingException {  
 //			  try {  
-				  
+		 		String pop3Host = "pop.gmail.com";//change accordingly  
 			   //1) get the session object  
 			   Properties properties = new Properties();  
 			   properties.setProperty("mail.pop3.host", pop3Host);  
@@ -21,10 +23,10 @@ public class RecieveMail {
 			   Session emailSession = Session.getDefaultInstance(properties);  
 			   
 			   store = emailSession.getStore("pop3s");
-			   String cs1 = String.valueOf(cs);
+			   String cs1 = String.valueOf(pwd);
 			      store.connect(pop3Host, user, cs1); 
 			  
-			   emailFolder = store.getFolder("INBOX");;  
+			   emailFolder = store.getFolder(mailtype);;  
 			   emailFolder.open(Folder.READ_ONLY);  
 			  
 			   //4) retrieve the messages from the folder in an array and print it  
@@ -66,6 +68,15 @@ public class RecieveMail {
 				}  
 				   
 			  }
+			  void setMailType(String s)
+			  {
+				  mailtype =s;
+			  }
+			  public void recieveCred(UserCredentials u)
+				{
+					user = u.getUserName();
+					pwd= u.getPwd();
+				}
 //			 public static void main(String[] args) {  
 //			  LoginFrame log = new LoginFrame();
 //			  String host = "pop.gmail.com";//change accordingly  
