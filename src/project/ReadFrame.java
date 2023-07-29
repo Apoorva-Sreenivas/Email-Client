@@ -2,6 +2,7 @@ package project;
 
 import java.awt.event.*;
 import java.io.*;
+import java.util.Properties;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -21,23 +22,53 @@ public class ReadFrame extends JFrame implements ActionListener
 	int curMsgIndex;
 	private Message[] messages;
 	String selectedOption = "INBOX";
-	public ReadFrame()
+	
+	//Merge
+	private String imapHost = "imap.gmail.com";
+	private Session session;
+	private Folder emailFolder;
+	private Store store;
+	private String protocol = "imaps";
+	public  void receiveEmail(String imapHost, String user, char[] cs) throws MessagingException {  
+		URLName url = new URLName(protocol, imapHost, 993, selectedOption, user, String.valueOf(cs));
+		   Properties properties = new Properties();  
+		   Session emailSession = Session.getDefaultInstance(properties);  
+		   store = emailSession.getStore(protocol);
+		   store.connect(imapHost, user, String.valueOf(cs)); 
+			  
+		   emailFolder = store.getFolder(url);
+		   emailFolder.open(Folder.READ_ONLY);  
+		  
+		   //4) retrieve the messages from the folder in an array and print it  
+		   messages = emailFolder.getMessages();  
+	}
+	public ReadFrame(UserCredentials u)
 	{
 		
         
 		super("Read");
+		RecieveMail robj = new RecieveMail(); 
 		setLayout(new BorderLayout());
 		GridLayout l2 = new GridLayout(5,1);
 		p = new JPanel(l2);
 		l2.setVgap(3);
 		p.setBorder(new EmptyBorder(10, 20, 10, 20));
-		String[] options = {"INBOX", "SPAM", "SENT"};
+		String[] options = {"INBOX", "[Gmail]/Spam", "[Gmail]/Sent Mail", "[Gmail]/Drafts", "[Gmail]/Important",  "[Gmail]/Starred"};
         dropdown = new JComboBox<>(options);
         dropdown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Update the label text when a new option is selected
+            	
                 selectedOption = (String) dropdown.getSelectedItem();
+                try {
+					receiveEmail(imapHost, u.getUserName(), u.getPwd());
+					curMsgIndex = -1;
+				} catch (MessagingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+                //System.out.println(selectedOption);
                 //selectedOption is the variable to be passed in RecieveMail.recievemail()
             }
         });
@@ -132,6 +163,8 @@ public class ReadFrame extends JFrame implements ActionListener
 	
 	public  void updateMail() throws IOException
 	{
+		if(messages.length == 0)
+			return;
 		Message msg = messages[curMsgIndex];
 		emailNo.setText(Integer.toString(curMsgIndex+1));
 		Address addr;
@@ -174,6 +207,13 @@ public class ReadFrame extends JFrame implements ActionListener
 
 		try {
 			Object content = msg.getContent();
+			//Sent messages did not return MultiPart instance, instead they returned String instances
+			if(content instanceof String)
+			{
+				String body = (String) content;
+				return body;
+			}
+			//For other messages
 			StringBuffer msgs = new StringBuffer();
 		StringBuffer messageContent = new StringBuffer();
 		 Multipart multipart = (Multipart) content;
