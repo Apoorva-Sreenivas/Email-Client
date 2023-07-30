@@ -1,3 +1,4 @@
+
 package project;
 
 import javax.mail.MessagingException;
@@ -6,6 +7,7 @@ import javax.mail.NoSuchProviderException;
 public class Control implements ICredentialsHandler {
 	ErrorMessage err ;
 	static LoginFrame log;
+	
 	public static void main(String[] args)
 	{
 		
@@ -17,16 +19,14 @@ public class Control implements ICredentialsHandler {
 	@Override
 	public void handleLogin(UserCredentials u) {
 		
-		
 		RecieveMail robj = new RecieveMail(); 
 		SendMail sobj = new SendMail();
+		
 		try {
-			
-		  robj.recieveCred(u);
-		  robj.receiveEmail();
-		  
+			String host = "imap.gmail.com";//change accordingly  
+		  robj.receiveEmail(host, u.getUserName(), u.getPwd());
 		  sobj.recieveCred(u);
-		  new ReadFrame().setMessages(robj.getMessage());
+		  new ReadFrame(u).setMessages(robj.getMessage());
 		  log.setVisible(false);
 		  
 		}
@@ -42,3 +42,4 @@ public class Control implements ICredentialsHandler {
 	}
 
 }
+

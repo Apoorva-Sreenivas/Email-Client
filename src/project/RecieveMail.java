@@ -1,3 +1,4 @@
+
 package project;
 
 import javax.mail.*;
@@ -7,26 +8,28 @@ import java.util.*;
 public class RecieveMail {
 	ErrorMessage err;
 	Message[] messages;
+	private Session session;
 	private Folder emailFolder;
 	private Store store;
-	 String mailtype="INBOX";
-	 static String user;
-		static char[] pwd;
-	 public  void receiveEmail() throws MessagingException {  
+	private String protocol = "imaps";
+	String selectedOption = "INBOX";
+	 public  void receiveEmail(String imapHost,   
+			  String user, char[] cs) throws MessagingException {  
 //			  try {  
-		 		String pop3Host = "pop.gmail.com";//change accordingly  
+				  
 			   //1) get the session object  
+		 URLName url = new URLName(protocol, imapHost, 993, selectedOption, user, String.valueOf(cs));
 			   Properties properties = new Properties();  
-			   properties.setProperty("mail.pop3.host", pop3Host);  
-			   properties.setProperty("mail.pop3.port","995");
-			   properties.put("mail.pop3.starttls.enable", "true");
+//			   properties.setProperty("mail.pop3.host", pop3Host);  
+//			   properties.setProperty("mail.pop3.port","995");
+//			   properties.put("mail.pop3.starttls.enable", "true");
 			   Session emailSession = Session.getDefaultInstance(properties);  
 			   
-			   store = emailSession.getStore("pop3s");
-			   String cs1 = String.valueOf(pwd);
-			      store.connect(pop3Host, user, cs1); 
+			   store = emailSession.getStore(protocol);
+//			   String cs1 = String.valueOf(cs);
+			      store.connect(imapHost, user, String.valueOf(cs)); 
 			  
-			   emailFolder = store.getFolder(mailtype);;  
+			   emailFolder = store.getFolder(url);
 			   emailFolder.open(Folder.READ_ONLY);  
 			  
 			   //4) retrieve the messages from the folder in an array and print it  
@@ -68,15 +71,6 @@ public class RecieveMail {
 				}  
 				   
 			  }
-			  void setMailType(String s)
-			  {
-				  mailtype =s;
-			  }
-			  public void recieveCred(UserCredentials u)
-				{
-					user = u.getUserName();
-					pwd= u.getPwd();
-				}
 //			 public static void main(String[] args) {  
 //			  LoginFrame log = new LoginFrame();
 //			  String host = "pop.gmail.com";//change accordingly  
@@ -90,3 +84,4 @@ public class RecieveMail {
 
 
 }
+
