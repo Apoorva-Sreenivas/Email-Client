@@ -71,7 +71,7 @@ public class ReadFrame extends JFrame implements ActionListener {
 		scroll = new JScrollPane(text);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scroll.setPreferredSize(new Dimension(700, 600));
+		scroll.setPreferredSize(new Dimension(700, 500));
 		p2.add(scroll);
 		p1 = new JPanel();
 		next = new JButton("NEXT");
@@ -118,6 +118,7 @@ public class ReadFrame extends JFrame implements ActionListener {
 		if (pb == logout) {
 			dispose();
 			LoginFrame obj1 = new LoginFrame();
+			obj1.show(new Control());
 			obj1.setVisible(true);
 			JOptionPane.showMessageDialog(null, "LOGGED OUT SUCCESSFULLY!!!");
 
