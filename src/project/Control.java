@@ -1,3 +1,4 @@
+
 package project;
 
 import javax.mail.MessagingException;
@@ -41,3 +42,4 @@ public class Control implements ICredentialsHandler {
 	}
 
 }
+
