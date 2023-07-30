@@ -125,26 +125,20 @@ public class SendFrame extends JFrame implements ActionListener {
         p.add(new JLabel("Attachment"));
         attachmentField = new JTextField();
         p.add(attachmentField);
-//        p3 = new JPanel();
         p.add(new JLabel(""));
         browse = new JButton("Browse");
         browse.addActionListener(this);
         p.add(browse);
-
-//        p.add(new JLabel("Text"));
         p2 = new JPanel();
         p2.setBorder(new EmptyBorder(10, 20, 10, 20));
         content = new JTextArea(50, 50);
         content.setEditable(true);
         p2.add(content);
-
-        
         p1 = new JPanel();
         p1.setBorder(new EmptyBorder(10, 10, 10, 10));
         send = new JButton("SEND");
         send.addActionListener(this);
         p1.add(send);
-
         add(p, BorderLayout.NORTH);
         add(p2, BorderLayout.WEST);
         add(p1, BorderLayout.SOUTH);
